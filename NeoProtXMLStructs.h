@@ -4,6 +4,7 @@
 #include <cstdlib>
 #include <iostream>
 #include <string>
+#include <cstring>
 
 static std::string xmlns="http://regis-web.systemsbiology.net/protXML";
 static std::string xmlns_xsi="http://www.w3.org/2001/XMLSchema-instance";
