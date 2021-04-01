@@ -21,6 +21,7 @@ void CnprAnalysisResult::write(FILE* f, int tabs){
   if (t>-1) t++;
 
   size_t j;
+  for (j = 0; j<libra_result.size(); j++) libra_result[j].write(f, t);
   for(j=0;j<StPeterQuant.size();j++) StPeterQuant[j].write(f,t);
 
   NPRprintTabs(f, tabs);

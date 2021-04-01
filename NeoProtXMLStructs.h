@@ -11,15 +11,22 @@ static std::string xmlns_xsi="http://www.w3.org/2001/XMLSchema-instance";
 static std::string xsi_schemaLocation="http://sashimi.sourceforge.net/schema_revision/protXML/protXML_v8.xsd";
 
 enum protXMLElement :int{
+  prAffectedChannel,
   prAnalysisResult,
   prAnalysisSummary,
   prAnnotation,
+  prContributingChannel,
   prDatasetDerivation,
   prDecoyAnalysis,
   prDecoyAnalysisSummary,
   prErrorPoint,
+  prFragmentMasses,
   prIndistinguishablePeptide,
   prIndistinguishableProtein,
+  prIntensity,
+  prIsotopicContributions,
+  prLibraResult,
+  prLibraSummary,
   prModAminoacidMass,
   prModificationInfo,
   prNSPInformation,

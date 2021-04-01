@@ -48,15 +48,22 @@ void NeoProtXMLParser::init() {
 
   version = 8;
 
+  elements[prAffectedChannel] = "affected_channel";
   elements[prAnalysisResult] = "analysis_result";
   elements[prAnalysisSummary] = "analysis_summary";
   elements[prAnnotation] = "annotation";
+  elements[prContributingChannel] = "contributing_channel";
   elements[prDatasetDerivation] = "dataset_derivation";
   elements[prDecoyAnalysis] = "decoy_analysis";
   elements[prDecoyAnalysisSummary] = "decoy_analysis_summary";
   elements[prErrorPoint] = "error_point";
+  elements[prFragmentMasses] = "fragment_masses";
   elements[prIndistinguishablePeptide] = "indistinguishable_peptide";
   elements[prIndistinguishableProtein] = "indistinguishable_protein";
+  elements[prIntensity] = "intensity";
+  elements[prIsotopicContributions] = "isotopic_contributions";
+  elements[prLibraResult] = "libra_result";
+  elements[prLibraSummary] = "libra_summary";
   elements[prModAminoacidMass] = "mod_aminoacid_mass";
   elements[prModificationInfo] = "modification_info";
   elements[prNSPDistribution] = "nsp_distribution";
@@ -83,7 +90,14 @@ void NeoProtXMLParser::startElement(const XML_Char *el, const XML_Char **attr){
   //cout << el << endl; //for diagnostics
 
   //string s;
-  if (isElement("analysis_result", el)){
+  if (isElement("affected_channel", el)){
+    activeEl.push_back(prAffectedChannel);
+    CnprAffectedChannel c;
+    c.channel = atoi(getAttrValue("channel", attr));
+    c.correction = atof(getAttrValue("correction", attr));
+    protein_summary.analysis_summary.back().libra_summary.back().isotopic_contributions.back().contributing_channel.back().affected_channel.push_back(c);
+  
+  } else if (isElement("analysis_result", el)){
     activeEl.push_back(prAnalysisResult);
     CnprAnalysisResult c;
     c.analysis= getAttrValue("analysis", attr);
@@ -121,6 +135,12 @@ void NeoProtXMLParser::startElement(const XML_Char *el, const XML_Char **attr){
       exit(99);
     }
 
+  } else if (isElement("contributing_channel", el)){
+    activeEl.push_back(prContributingChannel);
+    CnprContributingChannel c;
+    c.channel = atoi(getAttrValue("channel", attr));
+    protein_summary.analysis_summary.back().libra_summary.back().isotopic_contributions.back().contributing_channel.push_back(c);
+
   } else if (isElement("dataset_derivation", el)){
     activeEl.push_back(prDatasetDerivation);
     CnprDatasetDerivation c;
@@ -150,6 +170,13 @@ void NeoProtXMLParser::startElement(const XML_Char *el, const XML_Char **attr){
     c.num_incorr = atoi(getAttrValue("num_incorr", attr));
     protein_summary.protein_summary_header.program_details.proteinprophet_details.back().error_point.push_back(c);
 
+  } else if (isElement("fragment_masses", el)){
+    activeEl.push_back(prFragmentMasses);
+    CnprFragmentMasses c;
+    c.channel = atoi(getAttrValue("channel", attr));
+    c.mz = atof(getAttrValue("mz", attr));
+    protein_summary.analysis_summary.back().libra_summary.back().fragment_masses.push_back(c);
+
   } else if (isElement("indistinguishable_peptide", el)){
     activeEl.push_back(prIndistinguishablePeptide);
     CnprIndistinguishablePeptide c;
@@ -163,6 +190,40 @@ void NeoProtXMLParser::startElement(const XML_Char *el, const XML_Char **attr){
     CnprIndistinguishableProtein c;
     c.protein_name = getAttrValue("protein_name", attr);
     protein_summary.protein_group.back().protein.back().indistinguishable_protein.push_back(c);
+
+  } else if (isElement("intensity", el)){
+    activeEl.push_back(prIntensity);
+    CnprIntensity c;
+    c.channel = atoi(getAttrValue("channel", attr));
+    c.mz = atof(getAttrValue("mz", attr));
+    c.ratio = atof(getAttrValue("ratio", attr));
+    c.error = atof(getAttrValue("error", attr));
+    protein_summary.protein_group.back().protein.back().analysis_result.back().libra_result.back().intensity.push_back(c);
+
+  } else if (isElement("isotopic_contributions", el)){
+    activeEl.push_back(prIsotopicContributions);
+    CnprIsotopicContributions c;
+    protein_summary.analysis_summary.back().libra_summary.back().isotopic_contributions.push_back(c);
+
+  } else if (isElement("libra_result", el)){
+    activeEl.push_back(prLibraResult);
+    CnprLibraResult c;
+    c.number = atoi(getAttrValue("number", attr));
+    protein_summary.protein_group.back().protein.back().analysis_result.back().libra_result.push_back(c);
+
+  } else if (isElement("libra_summary", el)){
+    activeEl.push_back(prLibraSummary);
+    CnprLibraSummary c;
+    c.centroiding_preference = atoi(getAttrValue("centroiding_preference", attr));
+    c.channel_code = getAttrValue("channel_code", attr);
+    c.mass_tolerance = atof(getAttrValue("mass_tolerance", attr));
+    c.min_pep_prob = atof(getAttrValue("min_pep_prob", attr));
+    c.min_pep_wt = atof(getAttrValue("min_pep_wt", attr));
+    c.min_prot_prob = atof(getAttrValue("min_prot_prob", attr));
+    c.normalization = atoi(getAttrValue("normalization", attr));
+    c.output_type = atoi(getAttrValue("output_type", attr));
+    c.version = getAttrValue("version", attr);
+    protein_summary.analysis_summary.back().libra_summary.push_back(c);
 
   } else if (isElement("mod_aminoacid_mass", el)){
     activeEl.push_back(prModAminoacidMass);

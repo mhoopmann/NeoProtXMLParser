@@ -2,6 +2,7 @@
 #define _CNPRANALYSISRESULT_H
 
 #include "NeoProtXMLStructs.h"
+#include "CnprLibraResult.h"
 #include "CnprStPeterQuant.h"
 #include <string>
 #include <vector>
@@ -16,6 +17,7 @@ public:
   std::string analysis;
   int id;
 
+  std::vector<CnprLibraResult> libra_result;
   std::vector<CnprStPeterQuant> StPeterQuant;
 
 private:
