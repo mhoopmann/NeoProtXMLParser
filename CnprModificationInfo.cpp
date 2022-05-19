@@ -2,13 +2,18 @@
 
 using namespace std;
 
+CnprModificationInfo::CnprModificationInfo(){
+  mod_cterm_mass=0;
+  mod_nterm_mass=0;
+}
+
 void CnprModificationInfo::write(FILE* f, int tabs){
   //nothing required
 
   NPRprintTabs(f, tabs);
   fprintf(f, "<modification_info");
-  if (!mod_nterm_mass.empty())fprintf(f, " mod_nterm_mass=\"%s\"", mod_nterm_mass.c_str());
-  if (!mod_cterm_mass.empty())fprintf(f, " mod_cterm_mass=\"%s\"", mod_cterm_mass.c_str());
+  if (mod_nterm_mass!=0)fprintf(f, " mod_nterm_mass=\"%.6lf\"", mod_nterm_mass);
+  if (mod_cterm_mass!=0)fprintf(f, " mod_cterm_mass=\"%.6lf\"", mod_cterm_mass);
   if (!modified_peptide.empty())fprintf(f, " modified_peptide=\"%s\"", modified_peptide.c_str());
   if(mod_aminoacid_mass.empty()) {
     fprintf(f, "/>\n");

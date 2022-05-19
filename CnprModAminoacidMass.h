@@ -7,11 +7,12 @@
 
 class CnprModAminoacidMass {
 public:
+  CnprModAminoacidMass();
 
   void write(FILE* f, int tabs = -1);
 
-  std::string position;
-  std::string mass;
+  int position;
+  double mass;
 
 private:
 

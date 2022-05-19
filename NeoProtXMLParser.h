@@ -15,6 +15,9 @@
 //#define XML_STATIC	// to statically link the expat libraries
 //#endif
 
+#define NPR_VERSION "1.0.0"
+#define NPR_DATE "2022 MAY 19"
+
 
 class NeoProtXMLParser {
 public:
@@ -24,6 +27,7 @@ public:
   CnprProteinSummary protein_summary;
 
   bool read(const char* fn);
+  std::string versionNeo(); //returns version information
   bool write(const char* fn, bool tabs=true);
 
   //Functions for XML Parsing

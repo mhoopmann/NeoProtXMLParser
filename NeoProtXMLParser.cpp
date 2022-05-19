@@ -228,8 +228,8 @@ void NeoProtXMLParser::startElement(const XML_Char *el, const XML_Char **attr){
   } else if (isElement("mod_aminoacid_mass", el)){
     activeEl.push_back(prModAminoacidMass);
     CnprModAminoacidMass c;
-    c.position = getAttrValue("position", attr);
-    c.mass = getAttrValue("mass", attr);
+    c.position = atoi(getAttrValue("position", attr));
+    c.mass = atof(getAttrValue("mass", attr));
     switch (activeEl[activeEl.size() - 3]){
     case prIndistinguishablePeptide:
       protein_summary.protein_group.back().protein.back().peptide.back().indistinguishable_peptide.back().modification_info.back().mod_aminoacid_mass.push_back(c);
@@ -246,8 +246,8 @@ void NeoProtXMLParser::startElement(const XML_Char *el, const XML_Char **attr){
     activeEl.push_back(prModificationInfo);
     CnprModificationInfo c;
     c.modified_peptide = getAttrValue("modified_peptide", attr);
-    c.mod_cterm_mass = getAttrValue("mod_cterm_mass", attr);
-    c.mod_nterm_mass = getAttrValue("mod_nterm_mass", attr);
+    c.mod_cterm_mass = atof(getAttrValue("mod_cterm_mass", attr));
+    c.mod_nterm_mass = atof(getAttrValue("mod_nterm_mass", attr));
     switch (activeEl[activeEl.size() - 2]){
     case prIndistinguishablePeptide:
       protein_summary.protein_group.back().protein.back().peptide.back().indistinguishable_peptide.back().modification_info.push_back(c);
@@ -536,6 +536,14 @@ bool NeoProtXMLParser::read(const char* fn){
   fclose(fptr);
 
   return true;
+}
+
+string NeoProtXMLParser::versionNeo() {
+  string s;
+  s = NPR_VERSION;
+  s += "\t";
+  s += NPR_DATE;
+  return s;
 }
 
 bool NeoProtXMLParser::write(const char* fn, bool tabs){
